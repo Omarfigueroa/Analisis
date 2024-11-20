@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById("sidebar");
     const pageContentWrapper = document.getElementById("page-content-wrapper");
 
+    console.log(localStorage.getItem('jwt_token'));
     if(toggleSidebarBtn){
         toggleSidebarBtn.addEventListener("click", function () {
             sidebar.classList.toggle("collapsed");

@@ -13,6 +13,9 @@ class DashboardController extends Controller
 
     public function index()
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
         return Inertia::render('Dashboard/dashboard',[
             'user'=> Auth::user()
         ]);
