@@ -1,21 +1,26 @@
-document.addEventListener("DOMContentLoaded", function () {
+
+    const authToken = localStorage.getItem('jwt_token');
+    if (authToken) {
+        if (window.location.pathname === '/') {
+            window.location.href = '/dashboard';
+        }
+    } else {
+        if (window.location.pathname === '/dashboard') {
+            window.location.href = '/';
+        }
+    }
     const toggleSidebarBtn = document.getElementById("toggleSidebarBtn");
     const sidebar = document.getElementById("sidebar");
     const pageContentWrapper = document.getElementById("page-content-wrapper");
 
-    console.log(localStorage.getItem('jwt_token'));
+
     if(toggleSidebarBtn){
         toggleSidebarBtn.addEventListener("click", function () {
             sidebar.classList.toggle("collapsed");
             pageContentWrapper.classList.toggle("collapsed");
         });
     }
-    if (window.history && window.history.pushState) {
-        window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function () {
-            window.history.pushState(null, null, window.location.href);
-        };
-    }
+
     document.querySelectorAll('#sidebar .nav-link').forEach(link => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
@@ -48,5 +53,3 @@ document.addEventListener("DOMContentLoaded", function () {
         sidebar.classList.add("collapsed");
         pageContentWrapper.classList.add("collapsed");
     }
-
-});
