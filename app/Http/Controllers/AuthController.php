@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -24,18 +25,25 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required|string',
         ]);
+
         $user = User::where('username', $validated['username'])->first();
+        $credentials = $request->only('username', 'password');
+
         if (!$user) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
+
         if ($user->status == 0) {
             return response()->json(['message' => 'El usuario está inactivo'], 403);
         }
-        if (Auth::attempt($validated)) {
-            $request->session()->regenerate();
-            return redirect()->route('dashboard');
+
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
-        return response()->json(['message' => 'Credenciales incorrectas'], 401);
+
+        return response()->json([
+            'token' => $token,
+        ]);
     }
     public function logout(Request $request){
         Auth::logout();

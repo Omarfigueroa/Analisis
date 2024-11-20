@@ -27,7 +27,7 @@ export default {
     name: "Header",
     methods: {
         logout() {
-            localStorage.removeItem("auth_token");
+            localStorage.removeItem("jwt_token");
             window.location.href = "/logout";
         },
     },

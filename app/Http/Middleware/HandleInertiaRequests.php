@@ -7,6 +7,15 @@ use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
+    public function handle(Request $request, \Closure $next)
+    {
+        if ($request->expectsJson()) {
+            return $next($request);
+        }
+
+        // Asegúrate de que extiendes Middleware antes de llamar a parent::handle
+        return parent::handle($request, $next);
+    }
     /**
      * The root template that's loaded on the first page visit.
      *

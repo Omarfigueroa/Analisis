@@ -4,7 +4,6 @@ import {createInertiaApp} from "@inertiajs/vue3";
 import { createRouter, createWebHistory } from 'vue-router';
 import routes from './router/index';
 
-console.log(localStorage);
 
 const router = createRouter({
     history: createWebHistory(),
@@ -24,24 +23,19 @@ createInertiaApp({
     },
 });
 document.addEventListener("DOMContentLoaded", function () {
-    const authToken = localStorage.getItem('auth_token'); // Supongamos que almacenas el token en localStorage
-
-    window.onpopstate = function () {
-        if (authToken) {
-            // Si el usuario está autenticado, redirige al dashboard
-            if (window.location.pathname === '/login') {
-                window.location.href = '/dashboard';
-            }
-        } else {
-            // Si no hay sesión activa, redirige al login
-            if (window.location.pathname === '/dashboard') {
-                window.location.href = '/login';
-            }
+    const authToken = localStorage.getItem('jwt_token'); // Supongamos que almacenas el token en localStorage
+    if (authToken) {
+        if (window.location.pathname === '/') {
+            window.location.href = '/dashboard';
         }
-    };
+    } else {
+        if (window.location.pathname === '/dashboard') {
+            window.location.href = '/';
+        }
+    }
     if (window.location.pathname.startsWith("/dashboard")) {
         import("./assets/js/dashboard.js").then((module) => {
-            console.log("Dashboard script loaded");
+            
         });
     }
 });
